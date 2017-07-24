@@ -2,6 +2,7 @@ package com.example.android.inventoryapp;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +36,13 @@ public class InvCursorAdapter extends CursorAdapter {
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_NAME));
         String type = cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_TYPE));
-        String price = cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_PRICE));
+        String price = "price: $" + cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_PRICE));
         String quantity = cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_QUANTITY));
         String sold = cursor.getString(cursor.getColumnIndexOrThrow(InvContract.InvEntry.COLUMN_INV_SOLD));
+
+        if (TextUtils.isEmpty(sold)){
+            sold = "0";
+        }
 
         tvName.setText(name);
         tvType.setText(type);

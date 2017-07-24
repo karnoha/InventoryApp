@@ -75,7 +75,7 @@ public class EditorActivity extends AppCompatActivity
             invalidateOptionsMenu();
         } else {
             setTitle(getString(R.string.editor_activity_title_edit));
-            getLoaderManager().initLoader(EXISTING_INV_LOADER, null, this);
+            getLoaderManager().initLoader(EXISTING_INV_LOADER, null, null);
         }
         // find all views
         mNameEditText = (EditText) findViewById(R.id.editor_name);
@@ -104,6 +104,7 @@ public class EditorActivity extends AppCompatActivity
         String nameString = mNameEditText.getText().toString().trim();
         String typeString = mTypeEditText.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
+        String quantityString = mQuantityTextView.getText().toString().trim();
         String supplierString = mSupplierEditText.getText().toString().trim();
 
         // if all fields are blank, return back
@@ -111,6 +112,7 @@ public class EditorActivity extends AppCompatActivity
                 && TextUtils.isEmpty(nameString)
                 && TextUtils.isEmpty(typeString)
                 && TextUtils.isEmpty(priceString)
+                && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(supplierString)) {
             return;
         }
@@ -120,6 +122,7 @@ public class EditorActivity extends AppCompatActivity
         values.put(InvEntry.COLUMN_INV_NAME, nameString);
         values.put(InvEntry.COLUMN_INV_TYPE, typeString);
         values.put(InvEntry.COLUMN_INV_PRICE, priceString);
+        values.put(InvEntry.COLUMN_INV_QUANTITY, quantityString);
         values.put(InvEntry.COLUMN_INV_SUPPLIER, supplierString);
 
         // check whether we create or update

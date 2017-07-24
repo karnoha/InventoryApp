@@ -78,7 +78,7 @@ public class CatalogActivity extends AppCompatActivity
         ContentValues values = new ContentValues();
         values.put(InvEntry.COLUMN_INV_NAME, "Banana");
         values.put(InvEntry.COLUMN_INV_TYPE, "Fruit");
-        values.put(InvEntry.COLUMN_INV_PRICE, "10 CZK");
+        values.put(InvEntry.COLUMN_INV_PRICE, "10");
         values.put(InvEntry.COLUMN_INV_QUANTITY, "7");
         values.put(InvEntry.COLUMN_INV_SOLD, "13");
         values.put(InvEntry.COLUMN_INV_SUPPLIER, "800115435");

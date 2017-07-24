@@ -47,8 +47,8 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:gravity="center"
-            android:textSize="10sp"
-            tools:text="QUANTITY" />
+            android:textSize="12sp"
+            android:text="@string/quantity_tv" />
 
         <TextView
             android:id="@+id/list_quantity"
@@ -63,8 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:gravity="center"
-            android:textSize="10sp"
-            tools:text="SOLD" />
+            android:textSize="12sp"
+            android:text="@string/sold_tv" />
 
         <TextView
             android:id="@+id/list_sold"
@@ -82,7 +82,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@color/icons"
-        tools:text="sell" />
+        android:text="@string/sell_button"
+        android:focusable="false"/>
 
 
 </LinearLayout>

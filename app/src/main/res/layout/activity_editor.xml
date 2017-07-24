@@ -26,13 +26,15 @@
                 android:id="@+id/editor_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/edit_text_name" />
+                android:hint="@string/edit_text_name"
+                android:inputType="textCapWords" />
 
             <EditText
                 android:id="@+id/editor_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/edit_text_type" />
+                android:hint="@string/edit_text_type"
+                android:inputType="textCapWords" />
         </LinearLayout>
 
 
@@ -53,7 +55,9 @@
             android:id="@+id/editor_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_text_price" />
+            android:hint="@string/edit_text_price"
+            android:inputType="numberDecimal"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -85,15 +89,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <EditText
                 android:id="@+id/editor_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_price"
                 android:gravity="center_vertical"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/price_text_size"
-                android:textStyle="bold"
-                tools:text="57" />
+                android:hint="@string/edit_text_quantity"
+                android:inputType="numberDecimal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,7 +154,8 @@
             android:id="@+id/editor_supplier"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/edit_text_phone_number" />
+            android:hint="@string/edit_text_phone_number"
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <TextView
@@ -168,6 +171,7 @@
         android:layout_height="@dimen/img_size"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
-        tools:src="@mipmap/ic_launcher" />
+        tools:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/image_cont_desc"/>
 
 </LinearLayout>

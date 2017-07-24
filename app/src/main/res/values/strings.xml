@@ -19,8 +19,10 @@
     <string name="edit_text_name">Name of product</string>
     <string name="edit_text_type">Type of product</string>
     <string name="edit_text_price">Price</string>
+    <string name="edit_text_quantity">On Stock</string>
     <string name="edit_text_phone_number">Phone number</string>
     <string name="supplier">Supplier</string>
+    <string name="image_cont_desc">Image View placeholder.</string>
      <!--title for editor activity-->
     <string name="editor_activity_title_new">Add new Item</string>
     <string name="editor_activity_title_edit">Edit Item</string>
@@ -37,4 +39,8 @@
     <string name="toast_insert_failed">Something went south :(</string>
     <string name="toast_update_ok">Item updated</string>
     <string name="toast_update_failed">Something went south :(</string>
+    <!--list_item strings-->
+    <string name="quantity_tv">quantity</string>
+    <string name="sold_tv">sold</string>
+    <string name="sell_button">sell</string>
 </resources>
