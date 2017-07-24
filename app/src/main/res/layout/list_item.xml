@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@color/colorPrimaryLight"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="190dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_name"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/primary_text"
+            android:textSize="20sp"
+            tools:text="Product name" />
+
+        <TextView
+            android:id="@+id/list_type"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="@color/secondary_text"
+            tools:text="Type of the product" />
+
+        <TextView
+            android:id="@+id/list_price"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="@color/secondary_text"
+            tools:text="Price of the product" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:gravity="center"
+            android:textSize="10sp"
+            tools:text="QUANTITY" />
+
+        <TextView
+            android:id="@+id/list_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:text="14" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:gravity="center"
+            android:textSize="10sp"
+            tools:text="SOLD" />
+
+        <TextView
+            android:id="@+id/list_sold"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:textColor="@color/secondary_text"
+            android:textStyle="bold"
+            tools:text="6" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/list_sell_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@color/icons"
+        tools:text="sell" />
+
+
+</LinearLayout>

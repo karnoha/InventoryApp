@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // editor activity
+    <dimen name="width_left_panel">150dp</dimen>
+    <dimen name="height_price">40dp</dimen>
+    <dimen name="img_size">150dp</dimen>
+    <dimen name="price_text_size">24sp</dimen>
+    <dimen name="padding_let_order_button">16dp</dimen>
+
+</resources>

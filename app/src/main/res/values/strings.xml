@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Inventory App</string>
+     <!--catalog activity menu-->
+    <string name="action_new_item">New Item</string>
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="action_delete_all_entries">Delete everything</string>
+     <!--editor activity menu-->
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete current item</string>
+    <string name="action_add_picture">Add picture</string>
+     <!--activity_editor-->
+    <string name="overview">Overview</string>
+    <string name="price">Price</string>
+    <string name="quantity">On stock</string>
+    <string name="button_minus">-</string>
+    <string name="button_plus">+</string>
+    <string name="sold">Sold</string>
+    <string name="order_new">Order new</string>
+    <string name="edit_text_name">Name of product</string>
+    <string name="edit_text_type">Type of product</string>
+    <string name="edit_text_price">Price</string>
+    <string name="edit_text_phone_number">Phone number</string>
+    <string name="supplier">Supplier</string>
+     <!--title for editor activity-->
+    <string name="editor_activity_title_new">Add new Item</string>
+    <string name="editor_activity_title_edit">Edit Item</string>
+    <!--confirmation dialog for deletion-->
+    <string name="dialog_delete_message">Are you sure you want to delete this item?</string>
+    <string name="dialog_delete_yes">Delete</string>
+    <string name="dialog_delete_no">Cancel</string>
+    <!--confirmation dialog for discard editing-->
+    <string name="dialog_discard_message">Discard changes and quit editing?</string>
+    <string name="dialog_discard_yes">Discard</string>
+    <string name="dialog_discard_no">Keep editing</string>
+    <!--toast messages-->
+    <string name="toast_insert_ok">Item saved</string>
+    <string name="toast_insert_failed">Something went south :(</string>
+    <string name="toast_update_ok">Item updated</string>
+    <string name="toast_update_failed">Something went south :(</string>
+</resources>
