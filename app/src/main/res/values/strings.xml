@@ -51,6 +51,7 @@
     <string name="editor_check_before_save_quantity">Please type quantity!</string>
     <string name="editor_check_before_save_supplier">Please type supplier!</string>
     <string name="editor_check_before_save_picture">Please add picture before saving!</string>
-
+    <!--empty view for catalog activity-->
+    <string name="empty_view">No data to display. \nPlease create new items.</string>
 
 </resources>

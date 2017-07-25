@@ -154,7 +154,7 @@ public class EditorActivity extends AppCompatActivity
         });
     }
 
-    private void saveItem() {
+    private boolean saveItem() {
         // read data from edit fields
         String nameString = mNameEditText.getText().toString().trim();
         String typeString = mTypeEditText.getText().toString().trim();
@@ -169,27 +169,27 @@ public class EditorActivity extends AppCompatActivity
                 && TextUtils.isEmpty(priceString)
                 && TextUtils.isEmpty(quantityString)
                 && TextUtils.isEmpty(supplierString)) {
-            return;
+            return true;
         }
         //check for empty fields and warn user if he skips a field
         else if (TextUtils.isEmpty(nameString)) {
             Toast.makeText(this, R.string.editor_check_before_save_name, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         } else if (TextUtils.isEmpty(typeString)) {
             Toast.makeText(this, R.string.editor_check_before_save_type, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         } else if (TextUtils.isEmpty(priceString)) {
             Toast.makeText(this, R.string.editor_check_before_save_price, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         } else if (TextUtils.isEmpty(quantityString)) {
             Toast.makeText(this, R.string.editor_check_before_save_quantity, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         } else if (TextUtils.isEmpty(supplierString)) {
             Toast.makeText(this, R.string.editor_check_before_save_supplier, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         } else if (!mhasImage) {
             Toast.makeText(this, R.string.editor_check_before_save_picture, Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -227,6 +227,7 @@ public class EditorActivity extends AppCompatActivity
                 Toast.makeText(this, getString(R.string.toast_update_ok), Toast.LENGTH_SHORT).show();
             }
         }
+        return true;
     }
 
     @Override
@@ -254,9 +255,11 @@ public class EditorActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.action_save:
                 // save Item to db
-                saveItem();
+                boolean saved = saveItem();
                 // exit activity
-                finish();
+                if (saved){
+                    finish();
+                }
                 return true;
             case R.id.action_delete:
                 // ask if it's ok to delete and return back
@@ -419,13 +422,7 @@ public class EditorActivity extends AppCompatActivity
                 deleteItem();
             }
         });
-        builder.setNegativeButton(R.string.dialog_delete_no, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
-            }
-        });
+        builder.setNegativeButton(R.string.dialog_delete_no, null);
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }

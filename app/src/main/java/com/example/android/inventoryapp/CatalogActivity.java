@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InvContract.InvEntry;
@@ -42,8 +43,9 @@ public class CatalogActivity extends AppCompatActivity
         setContentView(R.layout.activity_catalog);
 
         ListView invListView = (ListView) findViewById(R.id.list);
-        View emptyView = findViewById(R.id.empty_view);
+        TextView emptyView =(TextView) findViewById(R.id.empty_view);
         invListView.setEmptyView(emptyView);
+        emptyView.setText(R.string.empty_view);
 
         mCursorAdapter = new InvCursorAdapter(this, null);
         invListView.setAdapter(mCursorAdapter);
@@ -94,7 +96,7 @@ public class CatalogActivity extends AppCompatActivity
         values.put(InvEntry.COLUMN_INV_SUPPLIER, "800115435");
         values.put(InvEntry.COLUMN_INV_PICTURE, convertToByte(getDrawable(R.drawable.banana)));
 
-        Uri newUri = getContentResolver().insert(InvEntry.CONTENT_URI, values);
+        getContentResolver().insert(InvEntry.CONTENT_URI, values);
     }
 
     private byte[] convertToByte(Drawable drawable){
