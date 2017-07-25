@@ -1,5 +1,6 @@
 package com.example.android.inventoryapp;
 
+import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -7,6 +8,9 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,10 +20,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InvContract.InvEntry;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+
+import static android.R.attr.data;
 
 public class CatalogActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -74,6 +83,7 @@ public class CatalogActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(21)
     private void insertDummyData() {
         ContentValues values = new ContentValues();
         values.put(InvEntry.COLUMN_INV_NAME, "Banana");
@@ -82,13 +92,30 @@ public class CatalogActivity extends AppCompatActivity
         values.put(InvEntry.COLUMN_INV_QUANTITY, "7");
         values.put(InvEntry.COLUMN_INV_SOLD, "13");
         values.put(InvEntry.COLUMN_INV_SUPPLIER, "800115435");
+        values.put(InvEntry.COLUMN_INV_PICTURE, convertToByte(getDrawable(R.drawable.banana)));
 
         Uri newUri = getContentResolver().insert(InvEntry.CONTENT_URI, values);
+    }
+
+    private byte[] convertToByte(Drawable drawable){
+        //converts drawable to bitmap
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+        Bitmap bitmap = bitmapDrawable.getBitmap();
+        //converts bitmap to byte, which can be stored in db
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 
     private void deleteAllData() {
         int rowsDeleted = getContentResolver().delete(InvEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from database");
+        if (rowsDeleted > 0){
+            Toast.makeText(this, "It's gone.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Nothing to delete.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override

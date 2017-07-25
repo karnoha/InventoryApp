@@ -94,20 +94,30 @@ public class InvProvider extends ContentProvider {
 
     private Uri insertInv(Uri uri, ContentValues values) {
         String name = values.getAsString(InvContract.InvEntry.COLUMN_INV_NAME);
-        if (name == null) {
-            throw new IllegalArgumentException("Incorrect name: " + name);
+        if (name == null || name.length() == 0) {
+            throw new IllegalArgumentException("Please input valid name");
         }
 
         String type = values.getAsString(InvContract.InvEntry.COLUMN_INV_TYPE);
-        if (type == null) {
-            throw new IllegalArgumentException("Incorrect type: " + type);
+        if (type == null || type.length() == 0) {
+            throw new IllegalArgumentException("Please input valid type");
         }
 
         Integer price = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_PRICE);
-        if (price == null) {
-            throw new IllegalArgumentException("Incorrect price: " + price);
+        if (price != null && price < 0) {
+            throw new IllegalArgumentException("Incorrect price");
         }
-        // TODO dodelat check vsech podminek
+
+        Integer quantity = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_QUANTITY);
+        if (quantity != null && quantity < 0) {
+            throw new IllegalArgumentException("Incorrect quantity");
+        }
+
+        Integer supplier = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_SUPPLIER);
+        if (supplier != null && supplier < 0) {
+            throw new IllegalArgumentException("Incorrect supplier");
+        }
+
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         long id = database.insert(InvContract.InvEntry.TABLE_NAME, null, values);
         if (id == -1) {
@@ -154,7 +164,41 @@ public class InvProvider extends ContentProvider {
     }
 
     private int updateInv(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // TODO dodelat check vsech podminek
+        if (values.containsKey(InvContract.InvEntry.COLUMN_INV_NAME)) {
+            String name = values.getAsString(InvContract.InvEntry.COLUMN_INV_NAME);
+            if (name == null || name.length() == 0) {
+                throw new IllegalArgumentException("Please input valid name");
+            }
+        }
+
+        if (values.containsKey(InvContract.InvEntry.COLUMN_INV_TYPE)) {
+            String type = values.getAsString(InvContract.InvEntry.COLUMN_INV_TYPE);
+            if (type == null || type.length() == 0) {
+                throw new IllegalArgumentException("Please input valid type");
+            }
+        }
+
+        if (values.containsKey(InvContract.InvEntry.COLUMN_INV_PRICE)) {
+            Integer price = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_PRICE);
+            if (price != null && price < 0) {
+                throw new IllegalArgumentException("Incorrect price");
+            }
+        }
+
+        if (values.containsKey(InvContract.InvEntry.COLUMN_INV_QUANTITY)) {
+            Integer quantity = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_QUANTITY);
+            if (quantity != null && quantity < 0) {
+                throw new IllegalArgumentException("Incorrect quantity");
+            }
+        }
+
+        if (values.containsKey(InvContract.InvEntry.COLUMN_INV_SOLD)) {
+            Integer supplier = values.getAsInteger(InvContract.InvEntry.COLUMN_INV_SUPPLIER);
+            if (supplier != null && supplier < 0) {
+                throw new IllegalArgumentException("Incorrect supplier");
+            }
+        }
+
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         int rowsUpdated = database.update(InvContract.InvEntry.TABLE_NAME, values, selection, selectionArgs);
         if (rowsUpdated <= 0) {

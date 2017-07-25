@@ -4,14 +4,16 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +29,9 @@ import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.InvContract.InvEntry;
 
-import static android.R.attr.data;
+import java.io.ByteArrayOutputStream;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by Karnoha on 23.07.2017.
@@ -47,6 +52,10 @@ public class EditorActivity extends AppCompatActivity
     private TextView mSoldTextView;
     private EditText mSupplierEditText;
     private ImageView mPictureImageView;
+    private Button mOrderButton;
+    private Button mQMinusButton;
+    private Button mQPlusButton;
+    private Button mAddPicture;
 
     // this is changed to true when editing a pet instead of creating new one
     private boolean mInvHasChanged = false;
@@ -59,6 +68,10 @@ public class EditorActivity extends AppCompatActivity
         }
     };
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private boolean mhasImage = false;
+    private Bitmap mBitmap;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,15 +80,21 @@ public class EditorActivity extends AppCompatActivity
         // this fetches uri for choosing whether we update an existing item or create a new one
         Intent intent = getIntent();
         mCurrentInvUri = intent.getData();
+        mOrderButton = (Button) findViewById(R.id.editor_order_button);
+        mQMinusButton = (Button) findViewById(R.id.editor_q_minus);
+        mQPlusButton = (Button) findViewById(R.id.editor_q_plus);
 
         // set title for the activity
         if (mCurrentInvUri == null) {
             setTitle(getString(R.string.editor_activity_title_new));
             //disables options menu to hide delete button
             invalidateOptionsMenu();
+            mOrderButton.setEnabled(false);
+            mQMinusButton.setEnabled(false);
+            mQPlusButton.setEnabled(false);
         } else {
             setTitle(getString(R.string.editor_activity_title_edit));
-            getLoaderManager().initLoader(EXISTING_INV_LOADER, null, null);
+            getSupportLoaderManager().initLoader(EXISTING_INV_LOADER, null, this);
         }
         // find all views
         mNameEditText = (EditText) findViewById(R.id.editor_name);
@@ -85,6 +104,9 @@ public class EditorActivity extends AppCompatActivity
         mSoldTextView = (TextView) findViewById(R.id.editor_sold);
         mSupplierEditText = (EditText) findViewById(R.id.editor_supplier);
         mPictureImageView = (ImageView) findViewById(R.id.editor_image);
+        mAddPicture = (Button) findViewById(R.id.editor_add_picture);
+        mhasImage = false;
+        mBitmap = null;
 
         // setup ontouch listeners so we can track if it's changed
         // before we exit so we can popup dialog
@@ -95,8 +117,41 @@ public class EditorActivity extends AppCompatActivity
         mSoldTextView.setOnTouchListener(mTouchListener);
         mSupplierEditText.setOnTouchListener(mTouchListener);
         mPictureImageView.setOnTouchListener(mTouchListener);
+        mOrderButton.setOnTouchListener(mTouchListener);
+        mQMinusButton.setOnTouchListener(mTouchListener);
+        mQPlusButton.setOnTouchListener(mTouchListener);
+        mAddPicture.setOnTouchListener(mTouchListener);
 
-        // todo nabindovat tlacitka
+        mOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                callSupplier(getSupplierNumber());
+            }
+        });
+
+        mQMinusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantityMinusClicked();
+            }
+        });
+
+        mQPlusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quantityPlusClicked();
+            }
+        });
+
+        mAddPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
     }
 
     private void saveItem() {
@@ -116,6 +171,30 @@ public class EditorActivity extends AppCompatActivity
                 && TextUtils.isEmpty(supplierString)) {
             return;
         }
+        //check for empty fields and warn user if he skips a field
+        else if (TextUtils.isEmpty(nameString)) {
+            Toast.makeText(this, R.string.editor_check_before_save_name, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(typeString)) {
+            Toast.makeText(this, R.string.editor_check_before_save_type, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(priceString)) {
+            Toast.makeText(this, R.string.editor_check_before_save_price, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(quantityString)) {
+            Toast.makeText(this, R.string.editor_check_before_save_quantity, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(supplierString)) {
+            Toast.makeText(this, R.string.editor_check_before_save_supplier, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (!mhasImage) {
+            Toast.makeText(this, R.string.editor_check_before_save_picture, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        mBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] imageByte = byteArrayOutputStream.toByteArray();
 
         // create new contentvalues object with values
         ContentValues values = new ContentValues();
@@ -124,6 +203,8 @@ public class EditorActivity extends AppCompatActivity
         values.put(InvEntry.COLUMN_INV_PRICE, priceString);
         values.put(InvEntry.COLUMN_INV_QUANTITY, quantityString);
         values.put(InvEntry.COLUMN_INV_SUPPLIER, supplierString);
+        values.put(InvEntry.COLUMN_INV_PICTURE, imageByte);
+
 
         // check whether we create or update
         if (mCurrentInvUri == null) {
@@ -181,9 +262,6 @@ public class EditorActivity extends AppCompatActivity
                 // ask if it's ok to delete and return back
                 showDeleteConfirmationDialog();
                 return true;
-            case R.id.action_add_picture:
-                // todo dodelat nahrani obrazku
-                return true;
             case R.id.home:
                 // this happens when user clicks the up arrow in the app bar
                 if (!mInvHasChanged) {
@@ -205,6 +283,16 @@ public class EditorActivity extends AppCompatActivity
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            mBitmap = (Bitmap) extras.get("data");
+            mPictureImageView.setImageBitmap(mBitmap);
+            mhasImage = true;
+        }
     }
 
     @Override
@@ -272,11 +360,15 @@ public class EditorActivity extends AppCompatActivity
             String name = cursor.getString(nameColumnIndex);
             String type = cursor.getString(typeColumnIndex);
             String price = cursor.getString(priceColumnIndex);
-            int quantity = cursor.getInt(quantityColumnIndex);
-            int sold = cursor.getInt(soldColumnIndex);
+            String quantity = cursor.getString(quantityColumnIndex);
+            String sold = cursor.getString(soldColumnIndex);
             String supplier = cursor.getString(supplierColumnIndex);
-            // jakej datovej typ bude obrazek?
-            // TODO dodelat obrazek nacitani
+
+            byte[] picture = cursor.getBlob(pictureColumnIndex);
+            if (picture != null) {
+                mhasImage = true;
+                mBitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+            }
 
             mNameEditText.setText(name);
             mTypeEditText.setText(type);
@@ -284,6 +376,7 @@ public class EditorActivity extends AppCompatActivity
             mQuantityTextView.setText(quantity);
             mSoldTextView.setText(sold);
             mSupplierEditText.setText(supplier);
+            mPictureImageView.setImageBitmap(mBitmap);
         }
     }
 
@@ -347,11 +440,39 @@ public class EditorActivity extends AppCompatActivity
                         Toast.LENGTH_SHORT).show();
             } else {
                 // delete okay
-                Toast.makeText(this, "Item deleted." + mCurrentInvUri,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Item deleted.", Toast.LENGTH_SHORT).show();
 
             }
         }
         finish();
+    }
+
+    private void callSupplier(int number) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + number));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    private int getSupplierNumber() {
+        int number = parseInt(mSupplierEditText.getText().toString().trim());
+        return number;
+    }
+
+    private void quantityMinusClicked() {
+        int currentQuantity = parseInt(mQuantityTextView.getText().toString().trim());
+        if (currentQuantity == 0) {
+            Toast.makeText(this, "Can't have negative quantity", Toast.LENGTH_SHORT).show();
+        } else {
+            currentQuantity--;
+        }
+        mQuantityTextView.setText(Integer.toString(currentQuantity));
+    }
+
+    private void quantityPlusClicked() {
+        int currentQuantity = parseInt(mQuantityTextView.getText().toString().trim());
+        currentQuantity++;
+        mQuantityTextView.setText(Integer.toString(currentQuantity));
     }
 }

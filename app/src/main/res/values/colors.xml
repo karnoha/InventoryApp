@@ -11,5 +11,11 @@
     <color name="editorColorPrimary">#2D3640</color>
     <color name="editorColorPrimaryDark">#394450</color>
 
-    <color name="editor_background">#eaf5f8</color>
+    <color name="editor_background">#d3ffce</color>
+    <!--color for editor layout - buttons-->
+    <color name="editor_button_plus">#447700</color>
+    <color name="editor_button_minus">#af130c</color>
+    <color name="editor_button_add_image">#c3e576</color>
+    <color name="editor_button_order">#c3e576</color>
+
 </resources>

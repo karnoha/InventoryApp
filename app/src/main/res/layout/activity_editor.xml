@@ -11,11 +11,25 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            style="@style/CategoryLeftPanel"
+        <LinearLayout
             android:layout_width="@dimen/width_left_panel"
             android:layout_height="wrap_content"
-            android:text="@string/overview" />
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/CategoryLeftPanel"
+                android:layout_width="@dimen/width_left_panel"
+                android:layout_height="wrap_content"
+                android:text="@string/overview" />
+
+            <Button
+                android:id="@+id/editor_add_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/padding_let_order_button"
+                android:text="@string/add_image" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -77,6 +91,7 @@
                 android:text="@string/quantity" />
 
             <Button
+                android:id="@+id/editor_order_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/padding_let_order_button"
@@ -103,12 +118,20 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/editor_q_minus"
+                    android:background="@color/editor_button_minus"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_weight="1"
                     android:text="@string/button_minus" />
 
                 <Button
+                    android:id="@+id/editor_q_plus"
+                    android:background="@color/editor_button_plus"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,7 +194,7 @@
         android:layout_height="@dimen/img_size"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
-        tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/image_cont_desc"/>
+        android:contentDescription="@string/image_cont_desc"
+        tools:src="@mipmap/ic_launcher" />
 
 </LinearLayout>

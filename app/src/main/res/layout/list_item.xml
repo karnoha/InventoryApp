@@ -14,26 +14,42 @@
 
         <TextView
             android:id="@+id/list_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:textColor="@color/primary_text"
             android:textSize="20sp"
             tools:text="Product name" />
 
-        <TextView
-            android:id="@+id/list_type"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:textColor="@color/secondary_text"
-            tools:text="Type of the product" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/list_price"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:textColor="@color/secondary_text"
-            tools:text="Price of the product" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
+
+                <TextView
+                    android:id="@+id/list_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textColor="@color/secondary_text"
+                    tools:text="Type of the product" />
+
+                <TextView
+                    android:id="@+id/list_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textColor="@color/secondary_text"
+                    tools:text="Price of the product" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -47,8 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:gravity="center"
-            android:textSize="12sp"
-            android:text="@string/quantity_tv" />
+            android:text="@string/quantity_tv"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/list_quantity"
@@ -63,8 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="15dp"
             android:gravity="center"
-            android:textSize="12sp"
-            android:text="@string/sold_tv" />
+            android:text="@string/sold_tv"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/list_sold"
@@ -82,8 +98,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:background="@color/icons"
-        android:text="@string/sell_button"
-        android:focusable="false"/>
+        android:focusable="false"
+        android:text="@string/sell_button" />
 
 
 </LinearLayout>

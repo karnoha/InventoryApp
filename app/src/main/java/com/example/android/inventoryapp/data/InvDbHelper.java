@@ -23,13 +23,13 @@ public class InvDbHelper extends SQLiteOpenHelper{
         String SQL_CREATE_INV_TABLE = "CREATE TABLE "
                 + InvEntry.TABLE_NAME + "("
                 + InvEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + InvEntry.COLUMN_INV_NAME + " TEXT, "
-                + InvEntry.COLUMN_INV_TYPE + " TEXT, "
-                + InvEntry.COLUMN_INV_PRICE + " INTEGER, "
-                + InvEntry.COLUMN_INV_QUANTITY + " INTEGER, "
-                + InvEntry.COLUMN_INV_SOLD + " INTEGER, "
-                + InvEntry.COLUMN_INV_SUPPLIER + " TEXT, "
-                + InvEntry.COLUMN_INV_PICTURE + " TEXT);";
+                + InvEntry.COLUMN_INV_NAME + " TEXT NOT NULL, "
+                + InvEntry.COLUMN_INV_TYPE + " TEXT NOT NULL, "
+                + InvEntry.COLUMN_INV_PRICE + " INTEGER DEFAULT 0, "
+                + InvEntry.COLUMN_INV_QUANTITY + " INTEGER DEFAULT 0, "
+                + InvEntry.COLUMN_INV_SOLD + " INTEGER DEFAULT 0, "
+                + InvEntry.COLUMN_INV_SUPPLIER + " TEXT NOT NULL, "
+                + InvEntry.COLUMN_INV_PICTURE + " BLOB NOT NULL);";
 
         db.execSQL(SQL_CREATE_INV_TABLE);
     }
